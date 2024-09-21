@@ -1,4 +1,3 @@
-// ainda n testei pq n fiz o main XD
 #include "my-lib.h"
 #include "funcoesFornecidas.h"
 #include <stdio.h>
