@@ -52,7 +52,7 @@ void print_info(char *address){
         return;
     }
 
-    printf("Numero de paginas de disco: %d\n", disk_page_num);
+    printf("Numero de paginas de disco: %d\n\n", disk_page_num);
 }
 
 void get_file_data(FILE *file, data *file_data){
