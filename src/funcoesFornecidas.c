@@ -1,3 +1,5 @@
+#include <ctype.h>
+#include <string.h>
 #include "funcoesFornecidas.h"
 void binarioNaTela(char *nomeArquivoBinario) { /* Você não precisa entender o código dessa função. */
 

@@ -39,12 +39,15 @@ int main(){
 			int  n;
 			scanf(" %d", &n);
 			search_and_delete_record(filename, n);
+			binarioNaTela(filename);
 			break;
 		}
 		case 5:{
 			break;
 		}
 		case 6:{
+			compress_file(filename);
+			binarioNaTela(filename);
 			break;
 		}
 		default:{
@@ -57,4 +60,4 @@ int main(){
 	filename = NULL;
 
 	return 0;
-	}
+}
