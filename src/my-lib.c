@@ -406,7 +406,7 @@ void write_compressed_file_header(FILE* old_file, FILE* new_file){
 }
 
 void write_registry(FILE* file, data* registry){
-    int total_size = 24; // fixed field size + separators
+    int total_size = ftell(file); 
     registry->removed = '0';
     registry->linkingRRN = -1;
     char delim = '#';
@@ -418,19 +418,20 @@ void write_registry(FILE* file, data* registry){
     fwrite(&registry->size, sizeof(float), 1, file);
     fwrite(&registry->speed_unit, sizeof(char), 1, file);
     fwrite(&registry->velocity, sizeof(int), 1, file);
-    total_size += fwrite(registry->name, sizeof(char), strlen(registry->name), file);
+    fwrite(registry->name, sizeof(char), strlen(registry->name), file);
     fwrite(&delim, sizeof(char), 1, file);
-    total_size += fwrite(registry->specie, sizeof(char), strlen(registry->specie), file);
+    fwrite(registry->specie, sizeof(char), strlen(registry->specie), file);
     fwrite(&delim, sizeof(char), 1, file);
-    total_size += fwrite(registry->habitat, sizeof(char), strlen(registry->habitat), file);
+    fwrite(registry->habitat, sizeof(char), strlen(registry->habitat), file);
     fwrite(&delim, sizeof(char), 1, file);
-    total_size += fwrite(registry->type, sizeof(char), strlen(registry->type), file);
+    fwrite(registry->type, sizeof(char), strlen(registry->type), file);
     fwrite(&delim, sizeof(char), 1, file);
-    total_size += fwrite(registry->diet, sizeof(char), strlen(registry->diet), file);
+    fwrite(registry->diet, sizeof(char), strlen(registry->diet), file);
     fwrite(&delim, sizeof(char), 1, file);
-    total_size += fwrite(registry->food, sizeof(char), strlen(registry->food), file);
+    fwrite(registry->food, sizeof(char), strlen(registry->food), file);
     fwrite(&delim, sizeof(char), 1, file);
     // setting trash string with remaining registry size and writing
+    total_size = ftell(file) - total_size;
     memset(trash, '$', REGISTRY_OFFSET - total_size);
     trash[REGISTRY_OFFSET-total_size] = '\0';
     fwrite(trash, sizeof(char), REGISTRY_OFFSET - total_size, file);
