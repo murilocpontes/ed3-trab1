@@ -5,7 +5,7 @@ OBJ = ./obj
 SRC = ./src
 
 # Lista de arquivos objeto
-OBJS = $(OBJ)/funcoesFornecidas.o $(OBJ)/my-lib.o
+OBJS = $(OBJ)/funcoesFornecidas.o $(OBJ)/sql.o $(OBJ)/archive.o
 
 # Flags de compilação com suporte ao GDB
 CFLAGS = -g -I $(INCLUDE) 
@@ -20,9 +20,14 @@ $(BIN)/trab1: $(OBJS) $(APPS)/main.c
 $(OBJ)/funcoesFornecidas.o: $(SRC)/funcoesFornecidas.c $(INCLUDE)/funcoesFornecidas.h
 	gcc $(CFLAGS) -c $(SRC)/funcoesFornecidas.c -o $(OBJ)/funcoesFornecidas.o
 
-# Regra para o arquivo objeto my-lib.o
-$(OBJ)/my-lib.o: $(SRC)/my-lib.c $(INCLUDE)/my-lib.h
-	gcc $(CFLAGS) -c $(SRC)/my-lib.c -o $(OBJ)/my-lib.o
+# Regra para o arquivo objeto archive.o
+$(OBJ)/archive.o: $(SRC)/archive.c $(INCLUDE)/archive.h
+	gcc $(CFLAGS) -c $(SRC)/archive.c -o $(OBJ)/archive.o
+
+# Regra para o arquivo objeto sql.o
+$(OBJ)/sql.o: $(SRC)/sql.c $(INCLUDE)/sql.h
+	gcc $(CFLAGS) -c $(SRC)/sql.c -o $(OBJ)/sql.o
+
 
 # Regra para rodar o programa
 run:
@@ -37,3 +42,4 @@ debug: $(BIN)/trab1
 clean:
 	rm -f $(OBJ)/*.o
 	rm -f $(BIN)/trab1
+

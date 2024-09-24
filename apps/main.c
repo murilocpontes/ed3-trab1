@@ -1,8 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "my-lib.h"
+#include "sql.h"
 #include "funcoesFornecidas.h"
+
 
 int main(){
 	int command;
