@@ -6,8 +6,8 @@
 
 
 int main(){
-	int command;
-	char *filename = (char *) malloc(50 * sizeof(char));
+	int command;                    // input command
+	char *filename = (char *) malloc(50 * sizeof(char));    // file name coming from input
 	scanf("%d %s",&command,filename);
 
 	switch(command){
@@ -22,9 +22,9 @@ int main(){
 			break;
 		}  
 		case 3:{
-			int n;
-            char *field = (char *) malloc(20 * sizeof(char));
-            char *value = (char *) malloc(30 * sizeof(char));
+			int n;       // the 'n' searches
+            char *field = (char *) malloc(20 * sizeof(char));    // field coming from the input
+            char *value = (char *) malloc(30 * sizeof(char));    // field value coming from input
             scanf(" %d",&n);
             for(int i = 0; i < n; i++){
                 printf("Busca %d\n",i+1);
@@ -46,7 +46,7 @@ int main(){
 			break;
 		}
 		case 5:{
-            int n; // n�mero de inser��es a serem realizadas
+            int n; // number of insertions to be performed
             scanf(" %d",&n);
             insert_record(&filename,n);
 			break;
@@ -57,7 +57,7 @@ int main(){
 			break;
 		}
 		default:{
-			printf("Falha no processamento do arquivo\n");
+			printf("Falha no processamento do arquivo.\n");
 			break;
 		} 
 

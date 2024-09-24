@@ -1,80 +1,80 @@
 #include "funcoesFornecidas.h"
 #include "sql.h"
 
-void read_csv_field(FILE *csv_file, int number, data *reg){  // fun��o que l� 10 campos do .csv, ou seja, uma linha e retorna um registro de dados lido
+void read_csv_field(FILE *csv_file, int number, data *reg){  // function that reads 10 fields from the .csv, that is, one line
 
     int aux1 = -1;
     char aux2, campo[160];
     int len;
 
     for(int n = 0; n != 9; n++){
-        aux1 = fscanf(csv_file,"%[^,]",campo);        // l� um campo at� encontrar uma v�rgula
-        if(aux1 <= 0)                              // se campo lido esta vazio, j� que fscanf retorna o n�mero de itens lidos e atribuidos com sucesso
+        aux1 = fscanf(csv_file,"%[^,]",campo);        // reads a field until it finds a comma
+        if(aux1 <= 0)                              // if the read field is empty, since fscanf returns the number of items read and assigned successfully
             strcpy(campo,"");
-        fscanf(csv_file,"%c", &aux2);               // ignora a v�rgula de separa��o
+        fscanf(csv_file,"%c", &aux2);               // ignore the separating comma
 
-        len = strlen(campo);   // verifica se o �ltimo caractere � '\r' e o substitui por '\0'
+        len = strlen(campo);   // checks if the last character is '\r' and replaces it with '\0'
         if (len > 0 && campo[len - 1] == '\r') {
             campo[len - 1] = '\0';
         }
 
-        if(!number){                              // se estiver lendo a primeira linha do csv, n�o salva
-            if(n == 0){                         // nome - string - n�o pode assumir valores nulos
+        if(!number){                              // if you are reading the first line of the csv, it does not save
+            if(n == 0){                         // name - string - cannot assume null values
                 strcpy(reg->name, campo);
-            } else if(n == 1){                  // dieta - string - n�o pode assumir valores nulos
+            } else if(n == 1){                  // diet - string - cannot assume null values
                 strcpy(reg->diet, campo);
-            } else if(n == 2){                  // habitat - string - pode assumir valores nulos
+            } else if(n == 2){                  // habitat - string - can take null values
                 strcpy(reg->habitat, campo);
-            } else if(n == 3){                  // populacao - int  - pode assumir valores nulos
+            } else if(n == 3){                  // population - int - can take null values
                 if(!strcmp(campo,""))
-                    reg->population = -1;     // se for NULO
+                    reg->population = -1;     // if it is NULL
                 else
-                    reg->population = atoi(campo);  // atoi() converte uma sequ�ncia de caracteres em um valor inteiro
+                    reg->population = atoi(campo);  // atoi() converts a sequence of characters into an integer value
 
-            } else if(n == 4){                  // tipo - string - pode assumir valores nulos
+            } else if(n == 4){                  // type - string - can take null values
                 strcpy(reg->type, campo);
-            } else if(n == 5){                  // velocidade - int - pode assumir valores nulos
+            } else if(n == 5){                  // velocity - int - can take null values
                 if(!strcmp(campo,""))
-                    reg->velocity = -1;    // se for NULO
+                    reg->velocity = -1;    // if it is NULL
                 else
-                    reg->velocity = atoi(campo);  // atoi() converte uma sequ�ncia de caracteres em um valor inteiro
+                    reg->velocity = atoi(campo);  // atoi() converts a sequence of characters into an integer value
 
-            } else if(n == 6){                  // unidadeMedida - char - pode assumir valores nulos
-                if(!strcmp(campo,""))             // se for NULO
+            } else if(n == 6){                  // unitMeasurement - char - can assume null values
+                if(!strcmp(campo,""))             // if it is NULL
                     reg->speed_unit = '$';
                 else
                     reg->speed_unit = campo[0];
-            } else if(n == 7){                  // tamanho - float - pode assumir valores nulos
+            } else if(n == 7){                  // size - float - can take null values
                 if(!strcmp(campo,""))
-                    reg->size = -1.0;    // caso seja NULO
+                    reg->size = -1.0;    // if it is NULL
                 else
-                    reg->size = atof(campo);     //  atof() converte sequ�ncia de caracteres em flutua��o
+                    reg->size = atof(campo);     //  atof() converts a sequence of characters to float
 
-            } else if(n == 8){                  // especie - string - n�o pode assumir valores nulos
+            } else if(n == 8){                  // specie - string - cannot assume null values
                 strcpy(reg->specie, campo);
             }
         }
     }
-    aux1 = fscanf(csv_file,"%[^\n]",campo);           // le o ultimo campo da linha que � terminado em \n
-    if(aux1 <= 0)                                  // se campo lido esta vazio
+    aux1 = fscanf(csv_file,"%[^\n]",campo);           // read the last field of the line that ends in '\n'
+    if(aux1 <= 0)                                  // if read field is empty
         strcpy(campo,"");
 
-    len = strlen(campo);       // verifica se o �ltimo caractere � '\r' e o substitui por '\0'
+    len = strlen(campo);       // checks if the last character is '\r' and replaces it with '\0'
     if (len > 0 && campo[len - 1] == '\r') {
         campo[len - 1] = '\0';
     }
 
-    fscanf(csv_file,"%c", &aux2);                   // ignora o \n de separacao
+    fscanf(csv_file,"%c", &aux2);                   // ignore the '\n' separator
 
-    if(!number){                                  // se estiver lendo a primeira linha do csv, n�o salva
-        strcpy(reg->food, campo);          // alimento - string - pode assumir valores nulos
-        reg->linkingRRN = -1;              // ainda nao ha um RRN de um pr�ximo registro de dados logicamente removido
-        reg->removed = '0';                 // o registro de dados nao est� removido
+    if(!number){                                  // if you are reading the first line of the csv, it does not save
+        strcpy(reg->food, campo);          // food - string - can take null values
+        reg->linkingRRN = -1;              // there is not yet an 'RRN' of a logically removed next data record
+        reg->removed = '0';                 // the data record is not removed
     }
 }
 
 
-void read_csv(char **csv_filename, char **binary_filename){ // funcionalidade 1: leitura de v�rios registros do csv
+void read_csv(char **csv_filename, char **binary_filename){ // feature 1: reading multiple csv records
 
     FILE *csv_file = fopen(*csv_filename,"rt");
     if(!csv_file){
@@ -100,7 +100,7 @@ void read_csv(char **csv_filename, char **binary_filename){ // funcionalidade 1:
 
     write_header(binary_file,&hea);
 
-    read_csv_field(csv_file,1,&reg);  // ignora o cabe�alho do csv
+    read_csv_field(csv_file,1,&reg);  // ignore csv header
 
     while(!eof_verification(csv_file)){
         read_csv_field(csv_file,0,&reg);
@@ -135,14 +135,14 @@ void print_info(char *address){
     int disk_page_num, is_deleted, status, flag = 0, i = 0;
 
     if (file == NULL){
-        printf("Falha no processamento do arquivo\n");
+        printf("Falha no processamento do arquivo.\n");
         return;
     }
     // Validating file condition and setting '0' while reading file info
     fgets(tmp, 2, file);
     status = atoi(tmp);
     if (!status){
-        printf("Falha no processamento do arquivo\n");
+        printf("Falha no processamento do arquivo.\n");
 		return;
 	}
 	fseek(file, - 1, SEEK_CUR);
@@ -179,10 +179,10 @@ void print_info(char *address){
     printf("Numero de paginas de disco: %d\n\n", disk_page_num);
 }
 
-void search_records(char **filename, char *field, char *value){ // funcionalidade 3: busca
+void search_records(char **filename, char *field, char *value){ // feature 3: search
     FILE *file;
     int rrn = 0;
-    if(*filename == NULL || !(file = fopen(*filename,"rb"))){  // abre o file no modo leitura bin�ria
+    if(*filename == NULL || !(file = fopen(*filename,"rb"))){  // open the file in binary read mode
         printf("Falha no processamento do arquivo.\n");
         return;
     }
@@ -193,11 +193,10 @@ void search_records(char **filename, char *field, char *value){ // funcionalidad
     read_header(file,&hea,trash);
 
     data reg;
-    //initialize_data(&reg);
 
     int k = 0;
-    int pages_accessed = 1;    // cabe�alho est� na primeira p�gina
-    int records_per_page = DISK_SIZE / REGISTRY_OFFSET;   // 1600 / 160 = 10   -->> n�mero de registros de dados por p�gina de disco
+    int pages_accessed = 1;    // header is on the first page
+    int records_per_page = DISK_SIZE / REGISTRY_OFFSET;   // 1600 / 160 = 10   -->> number of data records per disk page
     int record_counter = 0;
 
     while (!eof_verification(file)) {
@@ -217,7 +216,7 @@ void search_records(char **filename, char *field, char *value){ // funcionalidad
         }
 
        
-            int match = 0;    // corresponde
+            int match = 0;    // matches
 
             if(strcmp(field, "nome") == 0 && strcmp(reg.name, value) == 0){
                 match = 1;
@@ -231,9 +230,9 @@ void search_records(char **filename, char *field, char *value){ // funcionalidad
                 match = 1;
             } else if(strcmp(field, "alimento") == 0 && strcmp(reg.food, value) == 0){
                 match = 1;
-            } else if(strcmp(field, "populacao") == 0 && reg.population == atoi(value)){  // atoi() converte uma sequ�ncia de caracteres em um valor inteiro
+            } else if(strcmp(field, "populacao") == 0 && reg.population == atoi(value)){  // atoi() converts a sequence of characters into an integer value
                 match = 1;
-            } else if(strcmp(field, "tamanho") == 0 && reg.size == atof(value)){  // atof() converte sequ�ncia de caracteres em flutua��o
+            } else if(strcmp(field, "tamanho") == 0 && reg.size == atof(value)){  // atof() converts a sequence of characters to float
                 match = 1;
             } else if(strcmp(field, "velocidade") == 0 && reg.velocity == atoi(value)){
                 match = 1;
@@ -442,9 +441,9 @@ void remove_by_string(FILE* file, int position){
     fwrite(&nroRegRem, sizeof(int), 1, file);
 }
 
-void insert_record(char **binaryfilename, int n){     // funcionalidade 5: inserir novos registros de dados em um arquivo
+void insert_record(char **binaryfilename, int n){     // feature 5: insert new data records into a file
     FILE *binary_file;
-    if(*binaryfilename == NULL || !(binary_file = fopen(*binaryfilename,"rb+"))){  // abre o file no modo leitura e escrita bin�ria
+    if(*binaryfilename == NULL || !(binary_file = fopen(*binaryfilename,"rb+"))){  // opens the file in binary read and write mode
         printf("Falha no processamento do arquivo.\n");
         free(*binaryfilename);
         *binaryfilename = NULL;
@@ -454,12 +453,12 @@ void insert_record(char **binaryfilename, int n){     // funcionalidade 5: inser
     int next_rrn, pages;
 
     header hea;
-    initialize_header(&hea); // inicializa o cabe�alho
+    initialize_header(&hea); // initialize the header
     char *trash = (char *) malloc(1579 * sizeof(char));
-    read_header(binary_file,&hea,trash);   // l� o cabe�alho do arquivo
+    read_header(binary_file,&hea,trash);   // reads the file header
 
     data new_reg;
-    initialize_data(&new_reg);                                           // novo registro
+    initialize_data(&new_reg);                                           // initialize the new register
 
 
     char population_buffer[30];
@@ -481,7 +480,7 @@ void insert_record(char **binaryfilename, int n){     // funcionalidade 5: inser
         if(strcmp(population_buffer, "") == 0){
             new_reg.population = -1;
         } else {
-            new_reg.population = atoi(population_buffer);   // atoi() converte uma sequ�ncia de caracteres em um valor inteiro
+            new_reg.population = atoi(population_buffer);   // atoi() converts a sequence of characters into an integer value
         }
 
         scan_quote_string(new_reg.type);
@@ -491,7 +490,7 @@ void insert_record(char **binaryfilename, int n){     // funcionalidade 5: inser
         if(strcmp(velocity_buffer, "") == 0){
             new_reg.velocity = -1;
         } else {
-            new_reg.velocity = atoi(velocity_buffer);       // atoi() converte uma sequ�ncia de caracteres em um valor inteiro
+            new_reg.velocity = atoi(velocity_buffer);       // atoi() converts a sequence of characters into an integer value
         }
 
         //scanf(" %s",speed_unit_buffer);
@@ -507,51 +506,51 @@ void insert_record(char **binaryfilename, int n){     // funcionalidade 5: inser
         if(strcmp(size_buffer, "") == 0){
             new_reg.size = -1;
         } else {
-            new_reg.size = atof(size_buffer);       // atof() converte sequ�ncia de caracteres em flutua��o
+            new_reg.size = atof(size_buffer);       // atof() converts a sequence of characters to float
         }
 
         scan_quote_string(new_reg.specie);
 
         scan_quote_string(new_reg.food);
 
-         // verifica se o registro j� existe
+         // checks if the record already exists
         if (record_exists(binary_file, &new_reg, &hea)) {
-            continue;                               // pula para o pr�ximo registro (pr�xima itera��o)
+            continue;                               // jump to the next record (next iteration)
         }
 
 
         // sizeof(data)
         // sizeof(header)
-        if(hea.top == -1){        // hea.top == -1 : n�o h� registros logicamente removidos             insere no final do arquivo
-            fseek(binary_file, 0, SEEK_END); // ajusta o ponteiro "bynary_file" para a posi��o "0" a partir do fim do arquivo �SEEK_END�.
-            hea.nextRRN++;          // incrementa o pr�ximo RRN
-            define_nextRRN(binary_file, hea.nextRRN);  // atualiza o pr�ximo RRN no cabe�alho
-        } else {      // se h� registros logicamente removidos
-            fseek(binary_file, DISK_SIZE + hea.top * REGISTRY_OFFSET + 1, SEEK_SET); // posiciona no topo da pilha   // ajusta o ponteiro "bynary_file" para a posi��o "sizeof(header) + hea.top * sizeof(data)" a partir do inicio do arquivo �SEEK_SET�.
+        if(hea.top == -1){        // hea.top == -1 : there are no records logically removed      ---->       insert at the end of the file
+            fseek(binary_file, 0, SEEK_END); // sets the 'bynary_file' pointer to position '0' from the end of the file 'SEEK_END'.
+            hea.nextRRN++;          // increment the next 'RRN'
+            define_nextRRN(binary_file, hea.nextRRN);  // updates the next 'RRN' in the header
+        } else {      // whether there are logically removed records
+            fseek(binary_file, DISK_SIZE + hea.top * REGISTRY_OFFSET + 1, SEEK_SET); // position at the top of the stack  ---> adjusts the 'bynary_file' pointer to the position 'DISK_SIZE + hea.top * REGISTRY_OFFSET + 1' from the beginning of the file 'SEEK_SET'.
             fread(&hea.top, sizeof(int), 1, binary_file);
             fseek(binary_file, -(1+sizeof(int)), SEEK_CUR);
             hea.remRegNum--;
         }
 
-        write_registry(binary_file, &new_reg);  // escreve o novo registro
+        write_registry(binary_file, &new_reg);  // write the new register
 
         if(hea.nextRRN % 10 == 0){
             hea.diskPageNum++;
         }
         define_top(binary_file, hea.top);
-        define_status(binary_file,'1');   // defini o status do arquivo como consistente
-        define_diskPageNum(binary_file, hea.diskPageNum);   // atualiza o n�mero de p�ginas de disco
+        define_status(binary_file,'1');   // sets the 'status' of the file to consistent
+        define_diskPageNum(binary_file, hea.diskPageNum);   // updates the number of disk pages
         define_remRegNum(binary_file, hea.remRegNum);
     }
 
-    free_data(&new_reg);   // desaloca a mem�ria para as strings dinamicamente alocadas     // desaloca a mem�ria para as strings dinamicamente alocadas
+    free_data(&new_reg);   // deallocates memory for dynamically allocated strings
     fclose(binary_file);
     binarioNaTela(*binaryfilename);
     free(*binaryfilename);
     *binaryfilename = NULL;
 }
 
-int compare_records(data *reg1, data *reg2){    // compara todos os campos do registro para verificar se s�o iguais
+int compare_records(data *reg1, data *reg2){    // compares all fields in the record to check if they are the same
     return strcmp(reg1->name, reg2->name) == 0 &&
            strcmp(reg1->specie, reg2->specie) == 0 &&
            strcmp(reg1->habitat, reg2->habitat) == 0 &&
@@ -564,11 +563,11 @@ int compare_records(data *reg1, data *reg2){    // compara todos os campos do re
            reg1->speed_unit == reg2->speed_unit;
 }
 
-int record_exists(FILE *file, data *new_reg, header *hea){    // v� se o registro que quer inserir j� existe
+int record_exists(FILE *file, data *new_reg, header *hea){    // check if the record you want to insert already exists
     data existing_reg;
     int rrn = 0;
 
-    fseek(file, DISK_SIZE, SEEK_SET); // vai para o in�cio dos registros de dados
+    fseek(file, DISK_SIZE, SEEK_SET); // goes to the beginning of data records
     while(!eof_verification(file)){
         if(verify_removed_register(file)){
             rrn++;
@@ -585,7 +584,7 @@ int record_exists(FILE *file, data *new_reg, header *hea){    // v� se o regis
         free_data(&existing_reg);
         fseek(file, DISK_SIZE + rrn * REGISTRY_OFFSET, SEEK_SET);
     }
-    return 0; // Nenhum registro duplicado encontrado
+    return 0; // No duplicate records found
 }
 
 void compress_file(char* address){

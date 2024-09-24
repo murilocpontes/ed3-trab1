@@ -2,7 +2,7 @@
 
 /////////////// CREATE TABLE (1) ////////////////////////
 
-void read_csv_field(FILE *csv_file, int first, data *reg);
+void read_csv_field(FILE *csv_file, int number, data *reg);
 void read_csv(char **csv_filename, char **binary_filename);
 
 /////////////// SELECT FROM (2) ////////////////////////

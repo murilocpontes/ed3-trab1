@@ -81,13 +81,13 @@ void write_registry(FILE* file, data* registry){
     fwrite(trash, sizeof(char), REGISTRY_OFFSET - total_size, file);
 }
 
-void write_header(FILE *file, header *hea){  // fun��o para escrever o registro de cabe�alho no arquivo bin�rio
+void write_header(FILE *file, header *hea){  // function to write header record to binary file
     // setting trash string
     char trash[DISK_SIZE - HEADER_OFFSET + 1];
     memset(trash, '$', DISK_SIZE - HEADER_OFFSET);
     trash[DISK_SIZE - HEADER_OFFSET] = '\0';
 
-    fseek(file, 0, SEEK_SET); // ajusta o ponteiro "file" para a posi��o "0" a partir do inicio do arquivo �SEEK_SET�.
+    fseek(file, 0, SEEK_SET); // sets the 'file' pointer to position '0' from the beginning of the 'SEEK_SET' file.
 
     // writing header on new_file 
     fwrite(&hea->status, sizeof(char), 1, file);
@@ -99,8 +99,8 @@ void write_header(FILE *file, header *hea){  // fun��o para escrever o regis
     fwrite(&trash, sizeof(char), DISK_SIZE - HEADER_OFFSET, file);
 }
 
-void read_header(FILE *file, header *hea, char *trash){  // fun��o para ler o registro de cabe�alho do arquivo bin�rio
-    fseek(file,0,SEEK_SET);           //  ajusta o ponteiro "file" para a posi��o "0" a partir do inicio do arquivo �SEEK_SET�.
+void read_header(FILE *file, header *hea, char *trash){  // function to read the header record of the binary file
+    fseek(file,0,SEEK_SET);           //  sets the 'file' pointer to position '0' from the beginning of the 'SEEK_SET' file.
 
     fread(&hea->status, sizeof(char), 1, file);
     fread(&hea->top, sizeof(int), 1, file);
@@ -110,55 +110,55 @@ void read_header(FILE *file, header *hea, char *trash){  // fun��o para ler 
     fread(&hea->compQtt, sizeof(int), 1, file);
 
     for(int i = 0; i < 1579; i++){
-         fread(&trash[i], sizeof(char), 1, file);   // leitura do lixo
+         fread(&trash[i], sizeof(char), 1, file);   // trash reading
     }
 }
 
 int define_status(FILE *file, char character){
-    int n = ftell(file);                                      // salva o local do arquivo
-    if(fseek(file,0,SEEK_SET) != 0) return (-1);              // vai para o local do status
+    int n = ftell(file);                                      // save file location
+    if(fseek(file,0,SEEK_SET) != 0) return (-1);              // go to the 'status' location
     if(fwrite(&character,sizeof(char),1,file) <= 0) return (-1);
-    if(fseek(file,n,SEEK_SET) != 0) return (-1);              // volta para o local inicial de arquivo
+    if(fseek(file,n,SEEK_SET) != 0) return (-1);              // returns to the initial file location
     return 0;
 }
 
 int define_top(FILE *file, int top){
-    int n = ftell(file);                                      // salva o local de arquivo
-    if(fseek(file,1,SEEK_SET) != 0) return (-1);              // vai para o local de topo
+    int n = ftell(file);                                      // save file location
+    if(fseek(file,1,SEEK_SET) != 0) return (-1);              // goes to the 'top' location
     if(fwrite(&top,sizeof(int),1,file) <= 0) return (-1);
-    if(fseek(file,n,SEEK_SET) != 0) return (-1);              // volta para o local inicial do arquivo
+    if(fseek(file,n,SEEK_SET) != 0) return (-1);              // returns to the initial file location
     return 0;
 }
 
 int define_nextRRN(FILE *file, int next){
-    int n = ftell(file);                                      // salva o local de arquivo
-    if(fseek(file,5,SEEK_SET) != 0) return (-1);              // vai para o local de nextRRN
+    int n = ftell(file);                                      // save file location
+    if(fseek(file,5,SEEK_SET) != 0) return (-1);              // goes to the location of 'nextRRN'
     if(fwrite(&next,sizeof(int),1,file) <= 0) return (-1);
-    if(fseek(file,n,SEEK_SET) != 0) return (-1);              // volta para o local inicial do arquivo
+    if(fseek(file,n,SEEK_SET) != 0) return (-1);              // returns to the initial file location
     return 0;
 }
 
 int define_remRegNum(FILE *file, int removed){
-    int n = ftell(file);                                      // salva o local de arquivo
-    if(fseek(file,9,SEEK_SET) != 0) return (-1);              // vai para o local do remRegNum
+    int n = ftell(file);                                      // save file location
+    if(fseek(file,9,SEEK_SET) != 0) return (-1);              // goes to the location of 'remRegNum'
     if(fwrite(&removed,sizeof(int),1,file) <= 0) return (-1);
-    if(fseek(file,n,SEEK_SET) != 0) return (-1);              // volta para o local inicial do arquivo
+    if(fseek(file,n,SEEK_SET) != 0) return (-1);              // returns to the initial file location
     return 0;
 }
 
 int define_diskPageNum(FILE *file, int pages){
-    int n = ftell(file);                                      // salva o local de arquivo
-    if(fseek(file,13,SEEK_SET) != 0) return (-1);              // vai para o local de diskPageNum
+    int n = ftell(file);                                      // save file location
+    if(fseek(file,13,SEEK_SET) != 0) return (-1);              // goes to the location of 'diskPageNum'
     if(fwrite(&pages,sizeof(int),1,file) <= 0) return (-1);
-    if(fseek(file,n,SEEK_SET) != 0) return (-1);              // volta para o local inicial do arquivo
+    if(fseek(file,n,SEEK_SET) != 0) return (-1);              // returns to the initial file location
     return 0;
 }
 
 int define_compQtt(FILE *file, int quantity){
-    int n = ftell(file);                                      // salva o local de arquivo
-    if(fseek(file,17,SEEK_SET) != 0) return (-1);              // vai para o local de compQtt
+    int n = ftell(file);                                      // save file location
+    if(fseek(file,17,SEEK_SET) != 0) return (-1);              // goes to the location of 'compQtt'
     if(fwrite(&quantity,sizeof(int),1,file) <= 0) return (-1);
-    if(fseek(file,n,SEEK_SET) != 0) return (-1);              // volta para o local inicial do arquivo
+    if(fseek(file,n,SEEK_SET) != 0) return (-1);              // returns to the initial file location
     return 0;
 }
 
@@ -198,7 +198,7 @@ int verify_removed_register(FILE* file){
 }
 
 
-void initialize_header(header *hea){ // fun��o para inicializar o registro de cabe�alho
+void initialize_header(header *hea){ // function to initialize the header record
     hea->status = '0';
     hea->top = -1;
     hea->nextRRN = 0;
@@ -207,7 +207,7 @@ void initialize_header(header *hea){ // fun��o para inicializar o registro d
     hea->compQtt = 0;
 }
 
-void initialize_data(data *reg){
+void initialize_data(data *reg){   // function to initialize the data record
     reg->name = (char *)malloc(30 * sizeof(char));
     reg->specie = (char *)malloc(30 * sizeof(char));
     reg->habitat = (char *)malloc(30 * sizeof(char));
