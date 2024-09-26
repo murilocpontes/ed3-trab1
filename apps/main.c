@@ -1,3 +1,7 @@
+/// NOME: MATHEUS AGUIAR   -    N°USP: 14781512        -         O integrante da dupla desenvolveu 100% do que foi combinado de sua parte no trabalho 
+/// NOME: MURILO CURY PONTES  -   N°USP: 13830417        -        O integrante da dupla desenvolveu 100% do que foi combinado de sua parte no trabalho
+/// NÚMERO DO GRUPO: 11
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
